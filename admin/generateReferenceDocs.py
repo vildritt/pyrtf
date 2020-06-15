@@ -17,7 +17,8 @@ place. For new features, we need to update the unit tests, verify that they
 create the correct output, and then regenerate the reference RTF files with
 this script.
 """
-import os, sys
+import os
+import sys
 from unittest import TestCase
 
 from rtfng.utils import findTests, importModule
@@ -37,39 +38,38 @@ if requestedList:
 # iterate through the test files
 for startDir in searchDirs:
     for testFile in findTests(startDir, skipFiles):
-            modBase = os.path.splitext(testFile)[0]
-            name = modBase.replace(os.path.sep, '.')
-            # import the testFile as a module
-            mod = importModule(name)
-            # iterate through module objects, checking for TestCases
-            for objName in dir(mod):
-                if not objName.endswith('TestCase'):
-                    continue
-                obj = getattr(mod, objName)
-                if not issubclass(obj, TestCase):
-                    continue
-                # iterate through the TestCase attrs, looking for make_*
-                # methods
-                for attrName in dir(obj):
-                    if attrName.startswith('make_'):
-                        
-                        # Make sure this is not a duplicate.
-                        if attrName in doneList:
-                            raise Exception(
-                                'Duplicate test method found: %s' % attrName)
-                        else:
-                            doneList.append(attrName)
-                        
-                        # Skip if not requested.
-                        rootName = attrName.split('make_')[1]
-                        if requestedList and rootName not in requestedList:
-                            continue
+        modBase = os.path.splitext(testFile)[0]
+        name = modBase.replace(os.path.sep, '.')
+        # import the testFile as a module
+        mod = importModule(name)
+        # iterate through module objects, checking for TestCases
+        for objName in dir(mod):
+            if not objName.endswith('TestCase'):
+                continue
+            obj = getattr(mod, objName)
+            if not issubclass(obj, TestCase):
+                continue
+            # iterate through the TestCase attrs, looking for make_*
+            # methods
+            for attrName in dir(obj):
+                if attrName.startswith('make_'):
 
-                        # Save file.
-                        filename = '%s.rtf' % rootName
-                        doc = getattr(obj, attrName)()
-                        fh = open(os.path.join(pendingDir, filename), 'w+')
-                        print("Writing %s ..." % filename)
-                        doc.write(fh)
-                        fh.close()
+                    # Make sure this is not a duplicate.
+                    if attrName in doneList:
+                        raise Exception(
+                            'Duplicate test method found: %s' % attrName)
+                    else:
+                        doneList.append(attrName)
 
+                    # Skip if not requested.
+                    rootName = attrName.split('make_')[1]
+                    if requestedList and rootName not in requestedList:
+                        continue
+
+                    # Save file.
+                    filename = '%s.rtf' % rootName
+                    doc = getattr(obj, attrName)()
+                    fh = open(os.path.join(pendingDir, filename), 'w+')
+                    print("Writing %s ..." % filename)
+                    doc.write(fh)
+                    fh.close()

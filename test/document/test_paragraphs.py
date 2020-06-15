@@ -82,9 +82,13 @@ class ParagraphTestCase(RTFTestCase):
         para_props = ParagraphPropertySet(tabs=tabs)
         p = Paragraph(styles.ParagraphStyles.Normal, para_props)
         p.append(
-            'Phrase at Left Tab', TAB, 'Middle Phrase One', TAB, 'Right Phrase',
-            LINE, 'Second Left Phrase', TAB, 'Middle Phrase Two', TAB,
-            'Another Right Phrase')
+            'Phrase at Left Tab', TAB, 
+            'Middle Phrase One', TAB, 
+            'Right Phrase', LINE, 
+            'Second Left Phrase', TAB, 
+            'Middle Phrase Two', TAB,
+            'Another Right Phrase'
+        )
         section.append(p)
         return doc
     make_paraTabs = staticmethod(make_paraTabs)
@@ -98,6 +102,7 @@ class ParagraphTestCase(RTFTestCase):
             'The alignment of tabs and style can also be controlled. The '
             'following demonstrates how to use flush right tabs and the '
             'supported leaders.')
+
         def _makePara(name):
             tabs = TabPropertySet(
                 section.TwipsToRightMargin(),
@@ -147,14 +152,14 @@ class ParagraphTestCase(RTFTestCase):
             defying authority runs in the family."""
         sampleParagraph = re.sub('\s+', ' ', sampleParagraph)
         para_props = ParagraphPropertySet()
-        para_props.SetLeftIndent(TabPropertySet.DEFAULT_WIDTH *  3)
+        para_props.SetLeftIndent(TabPropertySet.DEFAULT_WIDTH * 3)
         p = Paragraph(styles.ParagraphStyles.Normal, para_props)
         p.append(sampleParagraph)
         section.append(p)
 
         para_props = ParagraphPropertySet()
         para_props.SetFirstLineIndent(TabPropertySet.DEFAULT_WIDTH * -2)
-        para_props.SetLeftIndent(TabPropertySet.DEFAULT_WIDTH *  3)
+        para_props.SetLeftIndent(TabPropertySet.DEFAULT_WIDTH * 3)
         p = Paragraph(styles.ParagraphStyles.Normal, para_props)
         p.append(sampleParagraph)
         section.append(p)
@@ -190,14 +195,14 @@ class ParagraphTestCase(RTFTestCase):
         p3.insert(0, text1)
         p3.insert(1, text2)
         p3.insert(2, text3)
-        
+
         # Confirm contents are same.
         assert p1[0:-1] == p2[0:-1]
         assert p2[0:-1] == p3[0:-1]
 
     def make_spaceBetweenLines():
         doc, section, styles = RTFTestCase.initializeDoc()
-        
+
         para_props = ParagraphPropertySet()
         quarterInch = 1440/2
         para_props.SetSpaceBetweenLines(quarterInch)
@@ -228,4 +233,3 @@ class ParagraphTestCase(RTFTestCase):
 
     def test_spaceBetweenLines(self):
         self.doTest()
-

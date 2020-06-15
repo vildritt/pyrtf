@@ -10,6 +10,7 @@ from .test_doctests import suite as doctestSuite
 searchDirs = ['rtfng', 'test']
 skipFiles = ['test_doctests.py', 'test_all.py']
 
+
 def getSuites():
     suites = [doctestSuite]
     loader = TestLoader()
@@ -31,6 +32,7 @@ def getSuites():
                 # append to suites list
                 suites.append(suite)
     return suites
+
 
 if __name__ == '__main__':
     suites = getSuites()

@@ -121,31 +121,31 @@ codePage = Literal('\\ansicpg') + Word(nums).setResultsName('codePage')
 fontTableControl = Combine(Literal('\\') + 'fonttbl')
 fontNumber = Literal('\\f') + Word(nums).setResultsName('fontNumber')
 fontFamily = Literal('\\f') + Word(alphanums
-                     ).setResultsName('fontFamily')
+                                   ).setResultsName('fontFamily')
 fontCharSet = Literal('\\f' + 'charset') + Word(alphanums
-                      ).setResultsName('fontCharSet')
+                                                ).setResultsName('fontCharSet')
 fontPitch = Literal('\\f' + 'prq') + oneOf('0 1 2'
-                    ).setResultsName('fontPitch')
+                                           ).setResultsName('fontPitch')
 panose = (leftBracket + Combine(Literal('\\*\\' + 'panose') + space) +
-    Word(nums).setResultsName('panose') + rightBracket)
+          Word(nums).setResultsName('panose') + rightBracket)
 fontName = Word(alphanums + '()- ').setResultsName('fontName')
 # font table RTF v1.0
 fontGroupCombined = Group(
     fontNumber + fontFamily + fontCharSet + Optional(space) +
     fontName + Optional(separator)
-    )
+)
 # font table RTF v1.2+
 fontGroupSeparate = Group(
     leftBracket +
     fontNumber + fontFamily + fontCharSet +
-    Optional(fontPitch) + Optional(space) + Optional(panose) + # | space +
+    Optional(fontPitch) + Optional(space) + Optional(panose) +  # | space +
     fontName + separator +
     rightBracket
-    )
+)
 font = fontGroupCombined | fontGroupSeparate
 fontTable = (leftBracket + fontTableControl +
-    OneOrMore(font).setResultsName('fonts') +
-    rightBracket)
+             OneOrMore(font).setResultsName('fonts') +
+             rightBracket)
 
 # file table
 # XXX
@@ -181,16 +181,17 @@ fontTable = (leftBracket + fontTableControl +
 
 # assemble the grammar
 grammar = (leftBracket + rtfVersion + charSet + codePage +
-    OneOrMore(rtfControl) +
-    fontTable +
-    #OneOrMore(rtfGroup) +
-    rightBracket
-    )
+           OneOrMore(rtfControl) +
+           fontTable +
+           # OneOrMore(rtfGroup) +
+           rightBracket
+           )
+
 
 def _test():
     import doctest
     doctest.testmod()
 
+
 if __name__ == '__main__':
     _test()
-

@@ -3,6 +3,7 @@ from rtfng.utils import RTFTestCase
 from rtfng.Elements import Document
 from rtfng.document.section import Section
 
+
 class SectionTestCase(RTFTestCase):
     def make_sectionEmpty():
         """
@@ -61,7 +62,7 @@ class SectionTestCase(RTFTestCase):
 
     def test_secondSection(self):
         self.doTest()
-        
+
     def make_docCopy():
         doc, section, styles = RTFTestCase.initializeDoc()
         section.append('First section')
@@ -77,10 +78,10 @@ class SectionTestCase(RTFTestCase):
     def make_landscapeMode():
         doc, section, styles = RTFTestCase.initializeDoc()
         section.SetLandscape(True)
-        section.append('This should be going along the long side of the paper.')
+        section.append(
+            'This should be going along the long side of the paper.')
         return doc
     make_landscapeMode = staticmethod(make_landscapeMode)
 
     def test_landscapeMode(self):
         self.doTest()
-

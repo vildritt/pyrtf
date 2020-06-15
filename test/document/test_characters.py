@@ -12,6 +12,7 @@ from rtfng.document.character import B, I, Inline, U, TEXT, Text
 from rtfng.document.section import Section
 from rtfng.document.paragraph import Paragraph
 
+
 class CharacterTestCase(RTFTestCase):
 
     def make_charStyleOverride():
@@ -20,11 +21,11 @@ class CharacterTestCase(RTFTestCase):
         p.append('This is a standard paragraph with the default style.')
         p = Paragraph()
         p.append('It is also possible to manully override a style. ',
-                  'This is a change of just the font ',
-                  TEXT('size', size=48),
-                  ' an this is for just the font ',
-                  TEXT('typeface', font=styles.Fonts.Impact) ,
-                  '.')
+                 'This is a change of just the font ',
+                 TEXT('size', size=48),
+                 ' an this is for just the font ',
+                 TEXT('typeface', font=styles.Fonts.Impact),
+                 '.')
         section.append(p)
         return doc
     make_charStyleOverride = staticmethod(make_charStyleOverride)
@@ -63,11 +64,11 @@ class CharacterTestCase(RTFTestCase):
     def make_charUnicode():
         doc, section, styles = RTFTestCase.initializeDoc()
         section.append('This tests unicode.')
-        
+
         p = Paragraph()
         p.append('32\u00B0 Fahrenheit is 0\u00B0 Celsuis')
         section.append(p)
-        
+
         p = Paragraph()
         p.append('Henry \u2163 is Henry IV in unicode.')
         section.append(p)
@@ -78,11 +79,11 @@ class CharacterTestCase(RTFTestCase):
     def test_charUnicode(self):
         self.doTest()
 
-
     def make_charFrame():
         doc, section, styles = RTFTestCase.initializeDoc()
         p = Paragraph()
-        thinEdge = BorderPropertySet(width=20, style=BorderPropertySet.SINGLE, colour=styles.Colours.Blue)
+        thinEdge = BorderPropertySet(
+            width=20, style=BorderPropertySet.SINGLE, colour=styles.Colours.Blue)
         textWithFrame = TextPropertySet(frame=thinEdge)
         p.append(Text('This tests frame drawn around text.', textWithFrame))
         section.append(p)
@@ -91,7 +92,6 @@ class CharacterTestCase(RTFTestCase):
 
     def test_charFrame(self):
         self.doTest()
-
 
     def make_charTab():
         doc, section, styles = RTFTestCase.initializeDoc()
@@ -106,13 +106,12 @@ class CharacterTestCase(RTFTestCase):
     def test_charTab(self):
         self.doTest()
 
-
     def make_charInline():
         doc, section, styles = RTFTestCase.initializeDoc()
         p = Paragraph()
         p.append(Inline('Simple Inline Element'))
         section.append(p)
-        
+
         # Test various element types inside Inline element.
         p = Paragraph()
         p.append(Inline('First Inline Element',
@@ -120,15 +119,13 @@ class CharacterTestCase(RTFTestCase):
                         'Second Inline Element',
                         RawCode(r'\tab '),
                         'After tab'
-                       ))
+                        ))
         section.append(p)
         return doc
     make_charInline = staticmethod(make_charInline)
 
     def test_charInline(self):
         self.doTest()
-
-
 
 
 class CharacterAPITestCase(RTFTestCase):
@@ -160,7 +157,7 @@ class CharacterAPITestCase(RTFTestCase):
         blue = TextPropertySet(colour=style.Colours.Blue)
         red = blue.Copy()
         red.colour = style.Colours.Red
-        
+
         # Confirm that the copies are independent objects.
         assert blue.colour == style.Colours.Blue
         assert red.colour == style.Colours.Red
@@ -169,13 +166,13 @@ class CharacterAPITestCase(RTFTestCase):
         left = ParagraphPropertySet(ParagraphPropertySet.LEFT)
         center = left.Copy()
         center.Alignment = ParagraphPropertySet.CENTER
-        
+
         # Confirm that the copies are independent objects.
         assert left.Alignment == ParagraphPropertySet.LEFT
         assert center.Alignment == ParagraphPropertySet.CENTER
 
     def test_ParagraphStyle(self):
-        
+
         # Normal constructor.
         style = StyleSheet()
         normalText = TextStyle(TextPropertySet(style.Fonts.Arial, 22))
@@ -194,22 +191,24 @@ class CharacterAPITestCase(RTFTestCase):
 
         # It's just too hard to write a standard test with a custom renderer.
         doc, section, styles = RTFTestCase.initializeDoc()
+
         class CustomClass(object):
             pass
         section.append(CustomClass())
-        
+
         # Define renderer with custom element support.
         specialString = "ABC I'm unique"
+
         def customElementWriter(renderer, element):
             renderer._write(specialString)
         r = Renderer(write_custom_element_callback=customElementWriter)
-        
+
         # Render with custom element.
         result = StringIO()
         r.Write(doc, result)
         testData = result.getvalue()
         result.close()
-        
+
         # Confirm generate result has custom rendering.
         assert specialString in testData
 
@@ -219,23 +218,25 @@ class CharacterAPITestCase(RTFTestCase):
         doc, section, styles = RTFTestCase.initializeDoc()
         p = Paragraph()
         p.append('This is a standard paragraph with the default style.')
+
         class CustomClass(object):
             pass
         p.append(CustomClass())
         section.append(p)
-        
+
         # Define renderer with custom element support.
         specialString = "ABC I'm unique"
+
         def customElementWriter(renderer, element):
             renderer._write(specialString)
         r = Renderer(write_custom_element_callback=customElementWriter)
-        
+
         # Render with custom element.
         result = StringIO()
         r.Write(doc, result)
         testData = result.getvalue()
         result.close()
-        
+
         # Confirm generate result has custom rendering.
         assert specialString in testData
 
@@ -243,12 +244,12 @@ class CharacterAPITestCase(RTFTestCase):
 
         # Create document with unknown element type.
         doc, section, styles = RTFTestCase.initializeDoc()
+
         class CustomClass(object):
             pass
         section.append(CustomClass())
-        
+
         # Try to render.
         r = Renderer()
         result = StringIO()
         self.assertRaises(Exception, r.Write, doc, result)
-

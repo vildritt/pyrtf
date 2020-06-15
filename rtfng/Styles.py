@@ -6,6 +6,7 @@ At present there are only two, Text and Paragraph but ListStyles will be added s
 
 from .PropertySets import *
 
+
 class TextStyle:
     def __init__(self, textProps, name=None, shading_props=None):
         self.textProps = textProps
@@ -20,6 +21,7 @@ class TextStyle:
         self.ShadingPropertySet = value or ShadingPropertySet()
         return self
 
+
 class ParagraphStyle:
     def __init__(self, name, text_style, paragraph_props=None, frame_props=None, shading_props=None):
 
@@ -29,7 +31,8 @@ class ParagraphStyle:
         if not text_style.textProps.font:
             raise Exception('Paragraph Styles must have a Font specified.')
         if not text_style.textProps.size:
-            raise Exception('Paragraph Styles must have a Font Size specified.')
+            raise Exception(
+                'Paragraph Styles must have a Font Size specified.')
         self.name = name
         self.SetTextStyle(text_style)
         self.SetParagraphPropertySet(paragraph_props)
@@ -74,5 +77,5 @@ class ParagraphStyle:
         """Set the Paragraph Style that should follow this one."""
 
         assert not value or isinstance(value, ParagraphStyle)
-        self.Next    = value
+        self.Next = value
         return self

@@ -33,9 +33,9 @@ setup(
     platforms=['Any'],
     install_requires=['PyParsing'],
     description=doclines[0],
-    long_description='\n'.join( doclines[2:]),
+    long_description='\n'.join(doclines[2:]),
     keywords=('RTF', 'Rich Text', 'Rich Text Format', 'documents',
-        'word'),
+              'word'),
     packages=find_packages(),
     classifiers=[_line for _line in classifiers.split('\n') if _line],
 )
