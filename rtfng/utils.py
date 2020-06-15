@@ -72,7 +72,7 @@ class RTFTestCase(TestCase):
 
     def setUp(self):
         base = ('test', 'sources', 'rtfng')
-        self.sourceDir = os.path.join(os.path.dirname(__file__)), *base)
+        self.sourceDir = os.path.join(os.path.dirname(os.path.dirname(__file__)), *base)
 
     def getReferenceData(self, name):
         fh=open(os.path.join(self.sourceDir, name + '.rtf'))
