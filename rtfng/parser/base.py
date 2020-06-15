@@ -1,5 +1,6 @@
 from rtfng.parser.grammar import grammar
 
+
 class RTFParser(object):
 
     def __init__(self, rtfData=None):
@@ -58,7 +59,7 @@ class RTFFile(object):
         # pass the string data into the parser
         try:
             parsed = RFTParser.parse(data)
-        except ParseException, e:
+        except ParseException as e:
             msg = "could not parse '%s'[...] : %s"
             raise RTFParseError(msg % (rtfstring[:30], e))
         self.parsed = protocol.validate(parsed)

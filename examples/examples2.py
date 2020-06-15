@@ -23,9 +23,9 @@ def MakeExample1() :
     section.append( 'Or you can use the image object to convert the image and then '
                     'save it to a raw code element that can be included later.' )
 
-    fout = file( 'image_tmp.py', 'w' )
-    print >> fout, 'from rtfng import RawCode'
-    print >> fout
+    fout = open( 'image_tmp.py', 'w' )
+    print('from rtfng import RawCode', file=fout)
+    print(file=fout)
     fout.write( image.ToRawCode( 'TEST_IMAGE' ) )
     fout.close()
 
@@ -43,7 +43,7 @@ def MakeExample1() :
     return doc
 
 def OpenFile( name ) :
-    return file( '%s.rtf' % name, 'w' )
+    return open( '%s.rtf' % name, 'w' )
 
 if __name__ == '__main__' :
     DR = Renderer()
@@ -52,5 +52,5 @@ if __name__ == '__main__' :
 
     DR.Write( doc1, OpenFile( 'Image1' ) )
 
-    print "Finished"
+    print("Finished")
 

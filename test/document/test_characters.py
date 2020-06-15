@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from StringIO import StringIO
+import io
 
 from rtfng.utils import RTFTestCase
 from rtfng.Elements import Document, StyleSheet
@@ -65,13 +65,12 @@ class CharacterTestCase(RTFTestCase):
         section.append('This tests unicode.')
         
         p = Paragraph()
-        p.append(u'32\u00B0 Fahrenheit is 0\u00B0 Celsuis')
+        p.append('32\u00B0 Fahrenheit is 0\u00B0 Celsuis')
         section.append(p)
         
         p = Paragraph()
-        p.append(u'Henry \u2163 is Henry IV in unicode.')
+        p.append('Henry \u2163 is Henry IV in unicode.')
         section.append(p)
-        
 
         return doc
     make_charUnicode = staticmethod(make_charUnicode)

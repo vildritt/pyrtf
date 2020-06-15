@@ -7,6 +7,7 @@ from rtfng.document.section import Section
 from rtfng.document.paragraph import Cell, Paragraph, Table
 from rtfng.PropertySets import BorderPropertySet, FramePropertySet, MarginsPropertySet, ParagraphPropertySet, TabPropertySet
 
+
 class TableTestCase(RTFTestCase):
  
     col1 = 1000

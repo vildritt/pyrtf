@@ -87,9 +87,11 @@ def MakeExample2() :
     section.append( p )
 
     #    ParagraphPropertySet is an alias for ParagraphPropertySet
-    para_props = ParagraphPropertySet( tabs = [ TabPropertySet( width=TabPropertySet.DEFAULT_WIDTH     ),
-                                       TabPropertySet( width=TabPropertySet.DEFAULT_WIDTH * 2 ),
-                                       TabPropertySet( width=TabPropertySet.DEFAULT_WIDTH     ) ] )
+    para_props = ParagraphPropertySet(tabs=[ 
+        TabPropertySet(width=TabPropertySet.DEFAULT_WIDTH),
+        TabPropertySet(width=TabPropertySet.DEFAULT_WIDTH * 2),
+        TabPropertySet(width=TabPropertySet.DEFAULT_WIDTH)
+    ])
     p = Paragraph( ss.ParagraphStyles.Normal, para_props )
     p.append( 'Left Word', TAB, 'Middle Word', TAB, 'Right Word', LINE,
               'Left Word', TAB, 'Middle Word', TAB, 'Right Word' )
@@ -344,7 +346,7 @@ def MakeExample7() :
     return doc
 
 def OpenFile( name ) :
-    return file( '%s.rtf' % name, 'w' )
+    return open( '%s.rtf' % name, 'w' )
 
 if __name__ == '__main__' :
     DR = Renderer()
@@ -365,4 +367,4 @@ if __name__ == '__main__' :
     DR.Write( doc6, OpenFile( '6' ) )
     DR.Write( doc7, OpenFile( '7' ) )
 
-    print "Finished"
+    print("Finished")

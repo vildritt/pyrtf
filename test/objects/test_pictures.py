@@ -6,6 +6,7 @@ from rtfng.document.paragraph import Paragraph
 from rtfng.document.section import Section
 from rtfng.object.picture import Image
 
+
 class PictureTestCase(RTFTestCase):
     
     def make_pictures():

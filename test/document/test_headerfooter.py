@@ -6,6 +6,7 @@ from rtfng.document.base import LINE
 from rtfng.document.paragraph import Paragraph
 from rtfng.document.section import Section
 
+
 class HeaderFooterTestCase(RTFTestCase):
 
     def make_headerFooterSimple():
@@ -43,8 +44,10 @@ class HeaderFooterTestCase(RTFTestCase):
         section.FirstHeader.append( 'This is the header for the first page.' )
         section.FirstFooter.append( 'This is the footer for the first page.' )
 
-        section.Header.append( 'This is the header that will appear on subsequent pages.' )
-        section.Footer.append( 'This is the footer that will appear on subsequent pages.' )
+        section.Header.append(
+            'This is the header that will appear on subsequent pages.')
+        section.Footer.append(
+            'This is the footer that will appear on subsequent pages.')
 
         p = Paragraph( ss.ParagraphStyles.Heading1 )
         p.append( 'Example 6' )
@@ -107,7 +110,9 @@ class HeaderFooterTestCase(RTFTestCase):
         section.append( p )
 
         return doc
-    make_headerFooterDiffPagesAndSections = staticmethod(make_headerFooterDiffPagesAndSections)
+
+    make_headerFooterDiffPagesAndSections = staticmethod(
+        make_headerFooterDiffPagesAndSections)
 
     def test_headerFooterDiffPagesAndSections(self):
         self.doTest()

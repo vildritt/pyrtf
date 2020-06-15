@@ -9,7 +9,6 @@ The TextPropertySet can be used for text or in a Paragraph Style.
 
 """
 
-from types import StringType
 from copy import deepcopy
 
 
@@ -17,7 +16,7 @@ from copy import deepcopy
 #    We need some basic Type like fonts, colours and paper definitions
 #
 def MakeAttributeName(value):
-    assert value and type(value)is StringType
+    assert value and type(value)is str
     value = value.replace(' ', '')
     return value
 
@@ -318,7 +317,7 @@ class TextPropertySet:
                  unicodeText=False):
         self.font = font
         self.size = size
-        self.unicode = unicodeText
+        self.str = unicodeText
         self.bold = bold
         self.italic = italic
         self.underline = underline
@@ -359,7 +358,7 @@ class ParagraphPropertySet:
         self.SetSpaceAfter (space_after)
         self.Tabs = []
         if tabs:
-            apply(self.SetTabs, tabs)
+            self.SetTabs(*tabs)
         self.SetFirstLineIndent(first_line_indent or None)
         self.SetLeftIndent(left_indent or None)
         self.SetRightIndent(right_indent or None)

@@ -9,6 +9,7 @@ from rtfng.document.section import Section
 from rtfng.document.character import TEXT
 from rtfng.document.paragraph import Paragraph
 
+
 class ParagraphTestCase(RTFTestCase):
 
     def make_paraHeading():

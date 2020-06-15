@@ -13,8 +13,10 @@ class Image( RawCode ) :
 
     PNG_LIB = 'pngblip'
     JPG_LIB = 'jpegblip'
-    PICT_TYPES = { 'png' : PNG_LIB,
-                   'jpg' : JPG_LIB }
+    PICT_TYPES = {
+        'png': PNG_LIB, 
+        'jpg': JPG_LIB
+    }
 
     def __init__( self, file_name, **kwargs ) :
 
@@ -30,22 +32,25 @@ class Image( RawCode ) :
 
         # Generate header codes.
         pict_type = self.PICT_TYPES[ file_name[ -3 : ].lower() ]
-        codes = [ pict_type,
-                  'picwgoal%s' % (self.width  * 20),
-                  'pichgoal%s' % (self.height * 20) ]
-        for kwarg, code, default in [ ( 'scale_x',     'scalex', '100' ),
-                                      ( 'scale_y',     'scaley', '100' ),
-                                      ( 'crop_left',   'cropl',    '0' ),
-                                      ( 'crop_right',  'cropr',    '0' ),
-                                      ( 'crop_top',    'cropt',    '0' ),
-                                      ( 'crop_bottom', 'cropb',    '0' ) ] :
+        codes = [ 
+            pict_type,
+            'picwgoal%s' % (self.width  * 20),
+            'pichgoal%s' % (self.height * 20) 
+        ]
+        for kwarg, code, default in [ 
+            ( 'scale_x',     'scalex', '100' ),
+            ( 'scale_y',     'scaley', '100' ),
+            ( 'crop_left',   'cropl',    '0' ),
+            ( 'crop_right',  'cropr',    '0' ),
+            ( 'crop_top',    'cropt',    '0' ),
+            ( 'crop_bottom', 'cropb',    '0' )] :
             codes.append( 'pic%s%s' % ( code, kwargs.pop( kwarg, default ) ) )
 
 
         # Reset back to the start of the file to get all of it and now
         # turn it into hex.
         # I tried using image.getdata() below but it relies on having libjpeg installed.
-        fin = file(file_name, 'rb')
+        fin = open(file_name, 'rb')
         fin.seek( 0, 0 )
         data = []
         image = hexlify( fin.read() )

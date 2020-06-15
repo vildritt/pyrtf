@@ -8,7 +8,14 @@ class Section( list ) :
     ODD    = 5
     BREAK_TYPES = [ NONE, COLUMN, PAGE, EVEN, ODD ]
 
-    def __init__( self, paper=None, margins=None, break_type=None, headery=None, footery=None, landscape=None, first_page_number=None ) :
+    def __init__(self,
+                 paper=None,
+                 margins=None,
+                 break_type=None,
+                 headery=None,
+                 footery=None,
+                 landscape=None,
+                 first_page_number=None):
         super( Section, self ).__init__()
 
         self.Paper   = paper   or StandardPaper.A4
@@ -29,8 +36,10 @@ class Section( list ) :
         return self.Paper.Width - ( self.Margins.Left + self.Margins.Right )
 
     def SetMargins( self, value ) :
-        self.Margins = value or MarginsPropertySet( top=1000, left=1200, bottom=1000, right=1200 )
-        self.Width   = self.Paper.Width - ( self.Margins.Left + self.Margins.Right )
+        self.Margins = value or MarginsPropertySet(
+            top=1000, left=1200, bottom=1000, right=1200)
+        self.Width = self.Paper.Width - (
+            self.Margins.Left + self.Margins.Right)
 
     def SetBreakType( self, value ) :
         assert value in self.BREAK_TYPES

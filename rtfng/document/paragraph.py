@@ -1,7 +1,6 @@
-from types import IntType, FloatType, LongType, StringType
 from rtfng.Styles import ParagraphStyle
-from rtfng.PropertySets import (
-    ParagraphPropertySet, FramePropertySet, MarginsPropertySet, ShadingPropertySet)
+from rtfng.PropertySets import (ParagraphPropertySet, FramePropertySet, 
+                                MarginsPropertySet, ShadingPropertySet)
 
 class Paragraph(list):
     def __init__(self, *params):
@@ -14,9 +13,12 @@ class Paragraph(list):
 
         for param in params:
             if   isinstance(param, ParagraphStyle): self.Style      = param
-            elif isinstance(param, ParagraphPropertySet): self.Properties = param
-            elif isinstance(param, FramePropertySet): self.Frame      = param
-            elif isinstance(param, ShadingPropertySet): self.Shading    = param
+            elif isinstance(param, ParagraphPropertySet): 
+                self.Properties = param
+            elif isinstance(param, FramePropertySet): 
+                self.Frame      = param
+            elif isinstance(param, ShadingPropertySet): 
+                self.Shading    = param
             else:
                 #    otherwise we add to it to our list of elements and let
                 #    the rendering custom handler sort it out itself.
@@ -77,7 +79,7 @@ class Table:
         if len(cells) == 0:
             raise Exception('A row must have at least one cell')
         height = None
-        if isinstance(cells[ 0 ], (IntType, FloatType, LongType)):
+        if isinstance(cells[0], (int, float)):
             height = int(cells[ 0 ])
             cells  = cells[ 1: ]
 
@@ -125,7 +127,7 @@ class Cell(list):
         self._append = super(Cell, self).append
 
         for param in params:
-            if   isinstance(param, StringType): self.append(param)
+            if   isinstance(param, str): self.append(param)
             elif isinstance(param, Paragraph): self.append(param)
             elif isinstance(param, FramePropertySet): self.SetFrame(param)
             elif isinstance(param, MarginsPropertySet): self.SetMargins(param)
@@ -139,11 +141,16 @@ class Cell(list):
         return self
 
     def SetAlignment(self, value):
-        assert value in [ self.ALIGN_TOP, self.ALIGN_CENTER, self.ALIGN_BOTTOM ] #, self.ALIGN_TEXT_TOP_DOWN, self.ALIGN_TEXT_BOTTOM_UP ]
+        assert value in [ 
+            self.ALIGN_TOP, self.ALIGN_CENTER, self.ALIGN_BOTTOM 
+        ] #, self.ALIGN_TEXT_TOP_DOWN, self.ALIGN_TEXT_BOTTOM_UP ]
         self.Alignment = value
 
     def SetFlow(self, value):
-        assert value in [ self.FLOW_LR_TB, self.FLOW_RL_TB, self.FLOW_LR_BT, self.FLOW_VERTICAL_LR_TB, self.FLOW_VERTICAL_TB_RL ]
+        assert value in [ 
+            self.FLOW_LR_TB, self.FLOW_RL_TB, self.FLOW_LR_BT, 
+            self.FLOW_VERTICAL_LR_TB, self.FLOW_VERTICAL_TB_RL 
+        ]
         self.Flow = value
 
     def SetSpan(self, value):

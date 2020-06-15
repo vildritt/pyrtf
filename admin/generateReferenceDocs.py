@@ -32,7 +32,7 @@ doneList = []
 
 requestedList = sys.argv[1:]
 if requestedList:
-    print 'Only writing these methods: %s' % ', '.join(requestedList)
+    print('Only writing these methods: %s' % ', '.join(requestedList))
 
 # iterate through the test files
 for startDir in searchDirs:
@@ -55,7 +55,8 @@ for startDir in searchDirs:
                         
                         # Make sure this is not a duplicate.
                         if attrName in doneList:
-                            raise Exception('Duplicate test method found: %s' % attrName)
+                            raise Exception(
+                                'Duplicate test method found: %s' % attrName)
                         else:
                             doneList.append(attrName)
                         
@@ -68,7 +69,7 @@ for startDir in searchDirs:
                         filename = '%s.rtf' % rootName
                         doc = getattr(obj, attrName)()
                         fh = open(os.path.join(pendingDir, filename), 'w+')
-                        print "Writing %s ..." % filename
+                        print("Writing %s ..." % filename)
                         doc.write(fh)
                         fh.close()
 

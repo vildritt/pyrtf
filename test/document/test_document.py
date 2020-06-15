@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-import os, StringIO, tempfile
+import os, io, tempfile
 
 from rtfng.utils import RTFTestCase
 from rtfng.Elements import Document
 from rtfng.document.section import Section
+
 
 class DocumentTestCase(RTFTestCase):
     
@@ -14,7 +15,7 @@ class DocumentTestCase(RTFTestCase):
         os.close(fd)
         doc.write(filename)
         
-        result = StringIO.StringIO()
+        result = io.StringIO()
         doc.write(result)
 
         assert open(filename, 'r').read() == result.getvalue()

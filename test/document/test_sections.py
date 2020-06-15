@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from rtfng.utils import RTFTestCase
 from rtfng.Elements import Document
 from rtfng.document.section import Section

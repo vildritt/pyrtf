@@ -67,12 +67,10 @@ def MergedCells( ) :
 
 
 	return doc
-	
+
 if __name__ == '__main__' :
 	renderer = Renderer()
 	
-	renderer.Write( MergedCells(), file( 'MergedCells.rtf', 'w' ) )
+	renderer.Write( MergedCells(), open( 'MergedCells.rtf', 'w' ) )
 	
-	print "Finished"	
-	
-	
+	print("Finished")

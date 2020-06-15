@@ -3,7 +3,7 @@ Utility functions for rtf-ng.
 """
 import os
 from unittest import TestCase
-from StringIO import StringIO
+from io import StringIO
 
 from rtfng.Elements import Document, Section
 
@@ -67,7 +67,7 @@ class RTFTestCase(TestCase):
 
     def setUp(self):
         base = ('test', 'sources', 'rtfng')
-        self.sourceDir = os.path.join(*base)
+        self.sourceDir = os.path.join(os.path.dirname(__file__)), *base)
 
     def getReferenceData(self, name):
         fh = open(os.path.join(self.sourceDir, name + '.rtf'))

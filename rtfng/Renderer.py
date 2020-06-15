@@ -1,10 +1,12 @@
-from types import StringType, ListType, TupleType, UnicodeType
 from copy import deepcopy
 
-from PropertySets import (
-    ParagraphPropertySet, TabPropertySet, ShadingPropertySet,
-    BorderPropertySet)
-from Constants import Languages, ViewKind, ViewZoomKind, ViewScale
+from .PropertySets import (
+    ParagraphPropertySet, 
+    TabPropertySet, 
+    ShadingPropertySet,
+    BorderPropertySet
+)
+from .Constants import Languages, ViewKind, ViewZoomKind, ViewScale
 
 from rtfng.document.base import TAB, LINE, RawCode
 from rtfng.document.section import Section
@@ -14,63 +16,81 @@ from rtfng.object.picture import Image
 
 DEFAULT_TAB_WIDTH = 720
 
-ParagraphAlignmentMap = { ParagraphPropertySet.LEFT: 'ql',
-                          ParagraphPropertySet.RIGHT: 'qr',
-                          ParagraphPropertySet.CENTER: 'qc',
-                          ParagraphPropertySet.JUSTIFY: 'qj',
-                          ParagraphPropertySet.DISTRIBUTE: 'qd' }
+ParagraphAlignmentMap = { 
+    ParagraphPropertySet.LEFT: 'ql',
+    ParagraphPropertySet.RIGHT: 'qr',
+    ParagraphPropertySet.CENTER: 'qc',
+    ParagraphPropertySet.JUSTIFY: 'qj',
+    ParagraphPropertySet.DISTRIBUTE: 'qd' 
+}
 
-TabAlignmentMap = { TabPropertySet.LEFT: '',
-                    TabPropertySet.RIGHT: 'tqr',
-                    TabPropertySet.CENTER: 'tqc',
-                    TabPropertySet.DECIMAL: 'tqdec' }
+TabAlignmentMap = { 
+    TabPropertySet.LEFT: '',
+    TabPropertySet.RIGHT: 'tqr',
+    TabPropertySet.CENTER: 'tqc',
+    TabPropertySet.DECIMAL: 'tqdec' 
+}
 
-TableAlignmentMap = { Table.LEFT: 'trql',
-                      Table.RIGHT: 'trqr',
-                      Table.CENTER: 'trqc' }
+TableAlignmentMap = { 
+    Table.LEFT: 'trql',
+    Table.RIGHT: 'trqr',
+    Table.CENTER: 'trqc' 
+}
 
-CellAlignmentMap = { Cell.ALIGN_TOP: '', # clvertalt
-                     Cell.ALIGN_CENTER: 'clvertalc',
-                     Cell.ALIGN_BOTTOM: 'clvertalb' }
+CellAlignmentMap = { 
+    Cell.ALIGN_TOP: '', # clvertalt
+    Cell.ALIGN_CENTER: 'clvertalc',
+    Cell.ALIGN_BOTTOM: 'clvertalb' 
+}
 
-CellFlowMap = {    Cell.FLOW_LR_TB: '', # cltxlrtb, Text in a cell flows from left to right and top to bottom (default)
-                Cell.FLOW_RL_TB: 'cltxtbrl', # Text in a cell flows right to left and top to bottom
-                Cell.FLOW_LR_BT: 'cltxbtlr', # Text in a cell flows left to right and bottom to top
-                Cell.FLOW_VERTICAL_LR_TB: 'cltxlrtbv', # Text in a cell flows left to right and top to bottom, vertical
-                Cell.FLOW_VERTICAL_TB_RL: 'cltxtbrlv' } # Text in a cell flows top to bottom and right to left, vertical
+CellFlowMap = {    
+    Cell.FLOW_LR_TB: '', # cltxlrtb, Text in a cell flows from left to right and top to bottom (default)
+    Cell.FLOW_RL_TB: 'cltxtbrl', # Text in a cell flows right to left and top to bottom
+    Cell.FLOW_LR_BT: 'cltxbtlr', # Text in a cell flows left to right and bottom to top
+    Cell.FLOW_VERTICAL_LR_TB: 'cltxlrtbv', # Text in a cell flows left to right and top to bottom, vertical
+    Cell.FLOW_VERTICAL_TB_RL: 'cltxtbrlv' 
+} # Text in a cell flows top to bottom and right to left, vertical
 
-ShadingPatternMap = { ShadingPropertySet.HORIZONTAL: 'bghoriz',
-                      ShadingPropertySet.VERTICAL: 'bgvert',
-                      ShadingPropertySet.FORWARD_DIAGONAL: 'bgfdiag',
-                      ShadingPropertySet.BACKWARD_DIAGONAL: 'bgbdiag',
-                      ShadingPropertySet.VERTICAL_CROSS: 'bgcross',
-                      ShadingPropertySet.DIAGONAL_CROSS: 'bgdcross',
-                      ShadingPropertySet.DARK_HORIZONTAL: 'bgdkhoriz',
-                      ShadingPropertySet.DARK_VERTICAL: 'bgdkvert',
-                      ShadingPropertySet.DARK_FORWARD_DIAGONAL: 'bgdkfdiag',
-                      ShadingPropertySet.DARK_BACKWARD_DIAGONAL: 'bgdkbdiag',
-                      ShadingPropertySet.DARK_VERTICAL_CROSS: 'bgdkcross',
-                      ShadingPropertySet.DARK_DIAGONAL_CROSS: 'bgdkdcross' }
+ShadingPatternMap = { 
+    ShadingPropertySet.HORIZONTAL: 'bghoriz',
+    ShadingPropertySet.VERTICAL: 'bgvert',
+    ShadingPropertySet.FORWARD_DIAGONAL: 'bgfdiag',
+    ShadingPropertySet.BACKWARD_DIAGONAL: 'bgbdiag',
+    ShadingPropertySet.VERTICAL_CROSS: 'bgcross',
+    ShadingPropertySet.DIAGONAL_CROSS: 'bgdcross',
+    ShadingPropertySet.DARK_HORIZONTAL: 'bgdkhoriz',
+    ShadingPropertySet.DARK_VERTICAL: 'bgdkvert',
+    ShadingPropertySet.DARK_FORWARD_DIAGONAL: 'bgdkfdiag',
+    ShadingPropertySet.DARK_BACKWARD_DIAGONAL: 'bgdkbdiag',
+    ShadingPropertySet.DARK_VERTICAL_CROSS: 'bgdkcross',
+    ShadingPropertySet.DARK_DIAGONAL_CROSS: 'bgdkdcross' 
+}
 
-TabLeaderMap = { TabPropertySet.DOTS: 'tldot',
-                 TabPropertySet.HYPHENS: 'tlhyph',
-                 TabPropertySet.UNDERLINE: 'tlul',
-                 TabPropertySet.THICK_LINE: 'tlth',
-                 TabPropertySet.EQUAL_SIGN: 'tleq' }
+TabLeaderMap = { 
+    TabPropertySet.DOTS: 'tldot',
+    TabPropertySet.HYPHENS: 'tlhyph',
+    TabPropertySet.UNDERLINE: 'tlul',
+    TabPropertySet.THICK_LINE: 'tlth',
+    TabPropertySet.EQUAL_SIGN: 'tleq' 
+}
 
-BorderStyleMap = { BorderPropertySet.SINGLE: 'brdrs',
-                   BorderPropertySet.DOUBLE: 'brdrth',
-                   BorderPropertySet.SHADOWED: 'brdrsh',
-                   BorderPropertySet.DOUBLED: 'brdrdb',
-                   BorderPropertySet.DOTTED: 'brdrdot',
-                   BorderPropertySet.DASHED: 'brdrdash',
-                   BorderPropertySet.HAIRLINE: 'brdrhair' }
+BorderStyleMap = { 
+    BorderPropertySet.SINGLE: 'brdrs',
+    BorderPropertySet.DOUBLE: 'brdrth',
+    BorderPropertySet.SHADOWED: 'brdrsh',
+    BorderPropertySet.DOUBLED: 'brdrdb',
+    BorderPropertySet.DOTTED: 'brdrdot',
+    BorderPropertySet.DASHED: 'brdrdash',
+    BorderPropertySet.HAIRLINE: 'brdrhair' 
+}
 
-SectionBreakTypeMap = { Section.NONE: 'sbknone',
-                        Section.COLUMN: 'sbkcol',
-                        Section.PAGE: 'sbkpage',
-                        Section.EVEN: 'sbkeven',
-                        Section.ODD: 'sbkodd' }
+SectionBreakTypeMap = { 
+    Section.NONE: 'sbknone',
+    Section.COLUMN: 'sbkcol',
+    Section.PAGE: 'sbkpage',
+    Section.EVEN: 'sbkeven',
+    Section.ODD: 'sbkodd' 
+}
 
 class Settings(list):
     def __init__(self):
@@ -144,13 +164,18 @@ class Renderer:
         settings.append(shading_props.Shading, prefix + 'shading%s')
         settings.append(ShadingPatternMap.get(shading_props.Pattern, False))
 
-        settings.append(self._colour_map.get(shading_props.Foreground, False), prefix + 'cfpat%s')
-        settings.append(self._colour_map.get(shading_props.Background, False), prefix + 'cbpat%s')
+        settings.append(
+            self._colour_map.get(shading_props.Foreground, False), 
+            prefix + 'cfpat%s')
+        settings.append(
+            self._colour_map.get(shading_props.Background, False),
+            prefix + 'cbpat%s')
 
     def _RendBorderPropertySet(self, edge_props, settings):
         settings.append(BorderStyleMap[ edge_props.Style ])
         settings.append(edge_props.Width, 'brdrw%s')
-        settings.append(self._colour_map.get(edge_props.Colour, False), 'brdrcf%s')
+        settings.append(
+            self._colour_map.get(edge_props.Colour, False), 'brdrcf%s')
         settings.append(edge_props.Spacing or False, 'brsp%s')
 
     def _RendFramePropertySet(self, frame_props, settings, tag_prefix=''):
@@ -204,9 +229,11 @@ class Renderer:
 
         if paragraph_props.SpaceBetweenLines:
             if paragraph_props.SpaceBetweenLines < 0:
-                settings.append(paragraph_props.SpaceBetweenLines, r'sl%s\slmult0')
+                settings.append(paragraph_props.SpaceBetweenLines, 
+                                r'sl%s\slmult0')
             else:
-                settings.append(paragraph_props.SpaceBetweenLines, r'sl%s\slmult1')
+                settings.append(paragraph_props.SpaceBetweenLines, 
+                                r'sl%s\slmult1')
 
     def _RendTextPropertySet(self, textProps, settings):
         if not textProps:
@@ -220,7 +247,7 @@ class Renderer:
         settings.append(textProps.doubleUnderline, 'uldb')
         settings.append(textProps.wordUnderline, 'ulw')
         settings.append(textProps.wordUnderline, 'ulw')
-        settings.append(textProps.unicode, 'u')
+        settings.append(textProps.str, 'u')
         settings.append(self._font_map.get(textProps.font, False), 'f%s')
         settings.append(textProps.size, 'fs%s')
         settings.append(self._colour_map.get(textProps.colour, False), 'cf%s')
@@ -312,7 +339,8 @@ class Renderer:
         self._colour_map = {}
         offset = 0
         for colour in self._doc.StyleSheet.Colours:
-            self._write(r'\red%s\green%s\blue%s;', colour.Red, colour.Green, colour.Blue)
+            self._write(r'\red%s\green%s\blue%s;', colour.Red, colour.Green, 
+                        colour.Blue)
             self._colour_map[ colour ] = offset + 1
             offset += 1
         self._write("}\n")
@@ -328,7 +356,8 @@ class Renderer:
             alternate = ''
             if font.Pitch: pitch     = r'\fprq%s'    % font.Pitch
             if font.Panose: panose    = r'{\*\panose %s}' % font.Panose
-            if font.Alternate: alternate = r'{\*\falt %s}'   % font.Alternate.name
+            if font.Alternate: 
+                alternate = r'{\*\falt %s}'   % font.Alternate.name
 
             self._write(r'{\f%s\f%s%s\fcharset%s%s %s%s;}',
                          offset,
@@ -452,7 +481,7 @@ class Renderer:
             elif clss == Table:
                 self.WriteTableElement(element)
 
-            elif clss == StringType:
+            elif clss == str:
                 self.WriteParagraphElement(Paragraph(element))
 
             elif clss in [ RawCode, Image ]:
@@ -467,7 +496,12 @@ class Renderer:
             else:
                 raise Exception("Don't know how to handle elements of type %s" % clss)
 
-    def WriteParagraphElement(self, paragraph_elem, tag_prefix='', tag_suffix=r'\par', opening='{', closing='}'):
+    def WriteParagraphElement(self, 
+                              paragraph_elem, 
+                              tag_prefix='', 
+                              tag_suffix=r'\par', 
+                              opening='{', 
+                              closing='}'):
 
         #    the tag_prefix and the tag_suffix take care of paragraphs in tables.  A
         #    paragraph in a table requires and extra tag at the front (intbl) and we
@@ -482,14 +516,16 @@ class Renderer:
         #    when writing the RTF the style is carried from the previous paragraph to the next,
         #    so if the currently written paragraph has a style then make it the current one,
         #    otherwise leave it as it was
-        self._CurrentStyle = self.paragraph_style_map.get(paragraph_elem.Style, self._CurrentStyle)
+        self._CurrentStyle = self.paragraph_style_map.get(
+            paragraph_elem.Style, self._CurrentStyle)
 
-        self._write(r'%s\pard\plain%s %s%s ' % (opening, tag_prefix, self._CurrentStyle, overrides))
+        self._write(r'%s\pard\plain%s %s%s ' % (
+            opening, tag_prefix, self._CurrentStyle, overrides))
 
         for element in paragraph_elem:
-            if isinstance(element, StringType):
+            if isinstance(element, str):
                 self._write(element)
-            elif isinstance(element, UnicodeType):
+            elif isinstance(element, str):
                 self.writeUnicodeElement(element)
             elif isinstance(element, RawCode):
                 self._write(element.Data)
@@ -508,7 +544,7 @@ class Renderer:
         self._write(tag_suffix + closing)
 
     def writeUnicodeElement(self, element):
-        text = ''.join(['\u%s?' % str(ord(e)) for e in element])
+        text = ''.join(['\\u%s?' % str(ord(e)) for e in element])
         self._write(text or '')
 
     def WriteRawCode(self, raw_elem):
@@ -524,7 +560,7 @@ class Renderer:
         if overrides: self._write('{%s ' % repr(overrides))
 
         #    if the data is just a string then we can now write it
-        if isinstance(text_elem.Data, StringType):
+        if isinstance(text_elem.Data, str):
             self._write(text_elem.Data or '')
 
         elif text_elem.Data == TAB:
@@ -546,7 +582,7 @@ class Renderer:
 
         for element in inline_elem:
             #    if the data is just a string then we can now write it
-            if isinstance(element, StringType):
+            if isinstance(element, str):
                 self._write(element)
 
             elif isinstance(element, RawCode):
@@ -631,15 +667,24 @@ class Renderer:
                     last_idx = len(cell) - 1
                     for element_idx, element in enumerate(cell):
                         #    wrap plain strings in paragraph tags
-                        if isinstance(element, StringType):
+                        if isinstance(element, str):
                             element = Paragraph(element)
 
                         #    don't forget the prefix or else word crashes and does all sorts of strange things
                         if element_idx == last_idx:
-                            self.WriteParagraphElement(element, tag_prefix=r'\intbl', tag_suffix='', opening='', closing='')
+                            self.WriteParagraphElement(
+                                element, 
+                                tag_prefix=r'\intbl', 
+                                tag_suffix='', 
+                                opening='', 
+                                closing='')
 
                         else:
-                            self.WriteParagraphElement(element, tag_prefix=r'\intbl', opening='', closing='')
+                            self.WriteParagraphElement(
+                                element, 
+                                tag_prefix=r'\intbl', 
+                                opening='', 
+                                closing='')
 
                     self._write(r'\cell')
 

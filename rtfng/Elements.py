@@ -1,11 +1,10 @@
-from types import IntType, FloatType, LongType, StringTypes
 from copy import deepcopy
 from binascii import hexlify
 
-from Renderer import Renderer
-from Constants import *
-from Styles import *
-from PropertySets import StandardColours, StandardFonts, StandardPaper
+from .Renderer import Renderer
+from .Constants import *
+from .Styles import *
+from .PropertySets import StandardColours, StandardFonts, StandardPaper
 
 from rtfng.document.base import TAB, LINE, RawCode
 from rtfng.document.section import Section
@@ -97,7 +96,12 @@ SECTION_PAGES = RawCode( r'{\field{\fldinst sectionpages}}' )
 ARIAL_BULLET  = RawCode( r'{\f2\'95}' )
 
 class Document :
-    def __init__( self, style_sheet=None, default_language=None, view_kind=None, view_zoom_kind=None, view_scale=None ) :
+    def __init__(self,
+                 style_sheet=None,
+                 default_language=None,
+                 view_kind=None,
+                 view_zoom_kind=None,
+                 view_scale=None):
         self.StyleSheet = style_sheet or MakeDefaultStyleSheet()
         self.Sections = AttributedList( Section )
 
@@ -118,11 +122,12 @@ class Document :
         return self
 
     def Copy( self ) :
-        result = Document( style_sheet      = self.StyleSheet.Copy(),
-                           default_language = self.DefaultLanguage,
-                           view_kind        = self.ViewKind,
-                           view_zoom_kind   = self.ViewZoomKind,
-                           view_scale       = self.ViewScale )
+        result = Document(
+            style_sheet=self.StyleSheet.Copy(),
+            default_language = self.DefaultLanguage,
+            view_kind        = self.ViewKind,
+            view_zoom_kind   = self.ViewZoomKind,
+            view_scale       = self.ViewScale)
         result.SetTitle( self.Title )
         result.Sections = self.Sections.Copy()
 
