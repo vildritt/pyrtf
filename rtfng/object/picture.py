@@ -1,6 +1,7 @@
 from binascii import hexlify
 
 from rtfng.document.base import RawCode
+import rtfng.misc.image_utils
 
 
 class Image(RawCode):
@@ -20,22 +21,17 @@ class Image(RawCode):
 
     def __init__(self, file_name, **kwargs):
 
-        # Try to import PIL.
-        try:
-            from PIL import Image
-        except:
-            raise Exception('Unable to import PIL Image library')
+        img_info = rtfng.misc.image_utils.get_image_info_from_file(file_name)
+        if not img_info:
+            pass
 
-        # Calculate size of image.
-        image = Image.open(file_name)
-        self.width, self.height = image.size
+        width, height, pict_type = img_info
+        pict_type = self.PICT_TYPES[pict_type]
 
-        # Generate header codes.
-        pict_type = self.PICT_TYPES[file_name[-3:].lower()]
         codes = [
             pict_type,
-            'picwgoal%s' % (self.width * 20),
-            'pichgoal%s' % (self.height * 20)
+            'picwgoal%s' % (width * 20),
+            'pichgoal%s' % (height * 20)
         ]
         for kwarg, code, default in [
                 ('scale_x', 'scalex', '100'), 
@@ -48,16 +44,15 @@ class Image(RawCode):
 
         # Reset back to the start of the file to get all of it and now
         # turn it into hex.
-        # I tried using image.getdata() below but it relies on having libjpeg installed.
-        fin = open(file_name, 'rb')
-        fin.seek(0, 0)
-        data = []
-        image = hexlify(fin.read())
-        for i in range(0, len(image), 128):
-            data.append(image[i: i + 128])
+        with open(file_name, 'rb') as fin:
+            fin.seek(0, 0)
+            data = []
+            image = hexlify(fin.read())
+            for i in range(0, len(image), 128):
+                data.append(image[i:i + 128])
 
-        data = r'{\pict{\%s}%s}' % ('\\'.join(codes), '\n'.join(data))
-        RawCode.__init__(self, data)
+            data = r'{\pict{\%s}%s}' % ('\\'.join(codes), '\n'.join(data))
+            RawCode.__init__(self, data)
 
     def ToRawCode(self, var_name):
         return '%s = RawCode( """%s""" )' % (var_name, self.Data)
