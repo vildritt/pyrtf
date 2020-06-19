@@ -61,6 +61,14 @@ def MakeDefaultStyleSheet():
                                              space_after=60))
     result.ParagraphStyles.append(ps)
 
+    NormalText.textProps.size = 18
+    NormalText.textProps.bold = True
+    ps = ParagraphStyle('Heading 3',
+                        NormalText.Copy(),
+                        ParagraphPropertySet(space_before=240,
+                                             space_after=60))
+    result.ParagraphStyles.append(ps)
+
     #    Add some more in that are based on the normal template but that
     #    have some indenting set that makes them suitable for doing numbered
     normal_numbered = result.ParagraphStyles.Normal.Copy()
