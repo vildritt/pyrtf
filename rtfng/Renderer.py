@@ -537,8 +537,6 @@ class Renderer:
 
         for element in paragraph_elem:
             if isinstance(element, str):
-                self._write(element)
-            elif isinstance(element, str):
                 self.writeUnicodeElement(element)
             elif isinstance(element, RawCode):
                 self._write(element.Data)
@@ -575,7 +573,7 @@ class Renderer:
 
         #    if the data is just a string then we can now write it
         if isinstance(text_elem.Data, str):
-            self._write(text_elem.Data or '')
+            self.writeUnicodeElement(text_elem.Data or '')
 
         elif text_elem.Data == TAB:
             self._write(r'\tab ')
@@ -599,7 +597,7 @@ class Renderer:
         for element in inline_elem:
             #    if the data is just a string then we can now write it
             if isinstance(element, str):
-                self._write(element)
+                self.writeUnicodeElement(element)
 
             elif isinstance(element, RawCode):
                 self._write(element.Data)
