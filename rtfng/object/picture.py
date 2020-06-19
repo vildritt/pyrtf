@@ -28,10 +28,16 @@ class Image(RawCode):
         width, height, pict_type = img_info
         pict_type = self.PICT_TYPES[pict_type]
 
+        if "fixed_width" in kwargs:
+            w = kwargs["fixed_width"]
+        else:
+            w = width * 10
+        h = (w * height // width)
+
         codes = [
             pict_type,
-            'picwgoal%s' % (width * 20),
-            'pichgoal%s' % (height * 20)
+            'picwgoal%s' % w,
+            'pichgoal%s' % h
         ]
         for kwarg, code, default in [
                 ('scale_x', 'scalex', '100'), 
