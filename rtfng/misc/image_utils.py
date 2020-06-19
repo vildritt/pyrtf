@@ -6,13 +6,13 @@ _JPEG_MARKER_FF = b"\xFF"
 _JPEG_MARKERS = [a for a in b"\xC0\xC1\xC2\xC3\xC5\xC6\xC7\xC9\xCA\xCB\xCD\xCE\xCF"]
 _JPEG_MIN_BLOCK_LEN = 2
 
-_PNG_SIGNATURE = "\x89\x50\x4e"
+_PNG_SIGNATURE = b"\x89\x50\x4e"
 _PNG_W_OFF = 18
 _PNG_H_OFF = 22
 
 
 def bytes2uint16_le(buffer):
-    return (ord(buffer[0]) << 8) + ord(buffer[1])
+    return (buffer[0] << 8) + buffer[1]
 
 
 def read_uint16_le(bstream):
@@ -20,13 +20,13 @@ def read_uint16_le(bstream):
 
 
 def get_png_image_size_from_stream(bstream):
-    header = bstream.read(PNG_H_OFF + 2)
+    header = bstream.read(_PNG_H_OFF + 2)
 
     if not header.startswith(_PNG_SIGNATURE):
         raise Exception('PNG image parsing failed')
 
-    width = bytes2uint16_le(header(_PNG_W_OFF : _PNG_W_OFF+1))
-    height = bytes2uint16_le(header(_PNG_H_OFF : _PNG_H_OFF+1))
+    width = bytes2uint16_le(header[_PNG_W_OFF : _PNG_W_OFF+2])
+    height = bytes2uint16_le(header[_PNG_H_OFF : _PNG_H_OFF+2])
 
     return width, height
 
@@ -59,7 +59,7 @@ def get_jpg_image_size_from_stream(bstream):
         return width, height
 
 
-def get_image_info_from_file(file_name)
+def get_image_info_from_file(file_name):
     _, ext = os.path.splitext(file_name)
     ext = ext.lower()
 

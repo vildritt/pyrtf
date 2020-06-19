@@ -47,7 +47,7 @@ class Image(RawCode):
         with open(file_name, 'rb') as fin:
             fin.seek(0, 0)
             data = []
-            image = hexlify(fin.read())
+            image = hexlify(fin.read()).decode("ascii")
             for i in range(0, len(image), 128):
                 data.append(image[i:i + 128])
 
